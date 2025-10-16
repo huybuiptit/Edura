@@ -30,6 +30,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildToolsVersion = "36.0.0"
 }
 
 dependencies {
@@ -38,6 +39,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.firebase.auth)
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
