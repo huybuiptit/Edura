@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,7 +37,8 @@ public class LoginActivity extends AppCompatActivity {
         
         // Check if user is already logged in
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
             finish();
             return;
         }

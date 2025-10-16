@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 auth.signOut();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 finish();
             }
         });
