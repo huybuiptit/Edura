@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.credentials.GetCredentialRequest;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +13,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -32,8 +38,9 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
+        GoogleSignInOptions gso;
+
 
         // Initialize views
         fullNameInput = findViewById(R.id.fullNameInput);
@@ -62,14 +69,20 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        googleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(SignUpActivity.this, "Google Sign Up clicked", Toast.LENGTH_SHORT).show();
-                // TODO: Implement Google sign up
-            }
-        });
 
+
+        googleButton.setOnClickListener(v -> signInWithGoogle());
+        private void signInWithGoogle() {
+            // Tạo Google ID Option
+            GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
+                    .setServerClientId(getString(R.string.default_web_client_id)) // lấy từ google-services.json
+                    .setFilterByAuthorizedAccounts(false) // cho phép chọn bất kỳ tài khoản Google
+                    .build();
+            // Tạo Credential Request
+            GetCredentialRequest request = new GetCredentialRequest.Builder()
+                    .addCredentialOption(googleIdOption)
+                    .build();
+        }
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
