@@ -152,6 +152,9 @@
                 </LinearLayout>
 
                 <!-- Sign Up Button -->
+
+                <!-- Divider with "or" -->
+
                 <Button
                     android:id="@+id/signUpButton"
                     android:layout_width="match_parent"
@@ -164,7 +167,6 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- Divider with "or" -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
