@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Edura</string>
+    
+    <!-- Login Screen -->
+    <string name="ai_quiz_generator">AI Quiz\nGenerator</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="or">or</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="login_link">Login</string>
+    
+    <!-- SignUp Screen -->
+    <string name="create_your_account">Create Your account</string>
+    <string name="full_name">Full Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_account">Already have an account?</string>
+    
+    <!-- Placeholders -->
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="full_name_hint">Full Name</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+</resources>
