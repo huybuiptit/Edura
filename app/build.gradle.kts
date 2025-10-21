@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.edura"
-        minSdk = 33
+        minSdk = 31
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -39,10 +39,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.firebase.auth)
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("androidx.credentials:credentials:1.3.0")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

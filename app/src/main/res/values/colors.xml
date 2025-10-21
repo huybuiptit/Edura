@@ -14,4 +14,22 @@
     <color name="text_gray">#666666</color>
     <color name="bg_gray">#F5F5F5</color>
     <color name="border_gray">#E0E0E0</color>
+    
+    <!-- Home Screen Colors -->
+    <color name="deep_blue">#1A0F91</color>
+    <color name="light_blue">#3D5AFE</color>
+    <color name="light_purple">#E8E5FF</color>
+    <color name="light_pink">#FFF0F5</color>
+    <color name="purple_icon">#9C88FF</color>
+    <color name="blue_icon">#6B8AFF</color>
+    <color name="green_complete">#4CAF50</color>
+    <color name="orange_incomplete">#FF9800</color>
+    <color name="light_gray_bg">#F8F9FA</color>
+    <color name="dark_text">#1A1A1A</color>
+    <color name="gray_text">#8E8E93</color>
+    <color name="orange_accent">#FF5722</color>
+    <color name="nav_selected">#4169E1</color>
+    <color name="nav_unselected">#9E9E9E</color>
+    <color name="dark_gray">#2D3748</color>
+    <color name="light_blue_bg">#E8EEFF</color>
 </resources>

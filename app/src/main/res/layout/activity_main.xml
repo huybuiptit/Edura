@@ -1,58 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primary_blue"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
+    <!-- Fragment Container -->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNav" />
+
+    <!-- Bottom Navigation -->
     <LinearLayout
+        android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/rounded_card_background"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@color/white"
         android:elevation="8dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="48dp">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:weightSum="4">
 
-        <!-- Robot Icon -->
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginBottom="24dp"
-            android:src="@drawable/ic_robot"
-            android:contentDescription="Logo" />
-
-        <!-- Welcome Text -->
-        <TextView
-            android:id="@+id/welcomeText"
-            android:layout_width="wrap_content"
+        <!-- Trang chủ -->
+        <LinearLayout
+            android:id="@+id/navHome"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Welcome!"
-            android:textColor="@color/black"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true">
 
-        <!-- Email Text -->
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/navHomeIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home"
+                android:layout_marginBottom="4dp"
+                app:tint="#4169E1" />
+
+            <TextView
+                android:id="@+id/navHomeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trang chủ"
+                android:textColor="#4169E1"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Quizz -->
+        <LinearLayout
+            android:id="@+id/navQuiz"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="You have successfully logged in"
-            android:textColor="@color/text_gray"
-            android:textSize="16sp" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true">
 
-        <!-- Logout Button -->
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/rounded_button"
-            android:text="Logout"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/navQuizIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_categories"
+                android:layout_marginBottom="4dp"
+                app:tint="@color/nav_unselected" />
+
+            <TextView
+                android:id="@+id/navQuizText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quizz"
+                android:textColor="@color/nav_unselected"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Thống kê -->
+        <LinearLayout
+            android:id="@+id/navStats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/navStatsIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_leaderboard"
+                android:layout_marginBottom="4dp"
+                app:tint="@color/nav_unselected" />
+
+            <TextView
+                android:id="@+id/navStatsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thống kê"
+                android:textColor="@color/nav_unselected"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Tài khoản -->
+        <LinearLayout
+            android:id="@+id/navProfile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/navProfileIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_user"
+                android:layout_marginBottom="4dp"
+                app:tint="@color/nav_unselected" />
+
+            <TextView
+                android:id="@+id/navProfileText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tài khoản"
+                android:textColor="@color/nav_unselected"
+                android:textSize="11sp" />
+        </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
 
+</RelativeLayout>

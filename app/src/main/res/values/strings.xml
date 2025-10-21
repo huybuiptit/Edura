@@ -25,4 +25,76 @@
     <string name="full_name_hint">Full Name</string>
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="default_web_client_id">926148470011-m4lfbr5ddpkgdk75lmk1qmfitrnnvhjg.apps.googleusercontent.com</string>
+    
+    <!-- Home Screen -->
+    <string name="hi">Hi, %s</string>
+    <string name="play_and_win">AI Quiz Generator</string>
+    <string name="start_quiz_enjoy">Create personalized quizzes with AI</string>
+    <string name="get_started">Create Now</string>
+    <string name="categories">Categories</string>
+    <string name="recent">Recent</string>
+    <string name="math">Math</string>
+    <string name="chemistry">Chemistry</string>
+    <string name="physics">Physics</string>
+    <string name="biology">Biology</string>
+    <string name="geography">Geography</string>
+    <string name="questions">%d questions</string>
+    <string name="completed">Completed</string>
+    <string name="incomplete">Incomplete</string>
+    <string name="points">%d</string>
+    
+    <!-- Navigation -->
+    <string name="nav_quiz">Quiz</string>
+    <string name="nav_categories">Categories</string>
+    <string name="nav_leaderboard">Leaderboard</string>
+    <string name="nav_profile">Profile</string>
+    
+    <!-- Quiz Screen -->
+    <string name="my_quizzes">My Quizzes</string>
+    <string name="quiz_count">%d quizzes</string>
+    <string name="no_quizzes">No quizzes yet</string>
+    <string name="tap_to_create_quiz">Tap + to create your first quiz</string>
+    <string name="add_quiz">Add Quiz</string>
+    <string name="create_new_quiz">Create New Quiz</string>
+    <string name="edit_quiz">Edit Quiz</string>
+    <string name="quiz_title">Quiz Title</string>
+    <string name="view_questions">View Questions</string>
+    <string name="add_question">Add Question</string>
+    
+    <!-- Question Screen -->
+    <string name="create_question">Create Question</string>
+    <string name="edit_question">Edit Question</string>
+    <string name="question_text">Question Text</string>
+    <string name="question_type">Question Type</string>
+    <string name="single_choice">Single Choice</string>
+    <string name="multiple_choice">Multiple Choice</string>
+    <string name="answers">Answers</string>
+    <string name="answer_1">Answer 1</string>
+    <string name="answer_2">Answer 2</string>
+    <string name="answer_3">Answer 3</string>
+    <string name="answer_4">Answer 4</string>
+    <string name="correct">Correct</string>
+    <string name="no_questions">No questions yet</string>
+    <string name="tap_to_add_question">Tap + to add your first question</string>
+    
+    <!-- Actions -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="back">Back</string>
+    <string name="menu">Menu</string>
+    
+    <!-- Messages -->
+    <string name="quiz_created">Quiz created successfully</string>
+    <string name="quiz_updated">Quiz updated successfully</string>
+    <string name="quiz_deleted">Quiz deleted successfully</string>
+    <string name="question_created">Question created successfully</string>
+    <string name="question_deleted">Question deleted successfully</string>
+    <string name="error_empty_title">Please enter quiz title</string>
+    <string name="error_empty_question">Please enter question text</string>
+    <string name="error_empty_answers">Please fill in all answers</string>
+    <string name="error_no_correct_answer">Please select at least one correct answer</string>
+    <string name="confirm_delete_quiz">Are you sure you want to delete this quiz?</string>
+    <string name="confirm_delete_question">Are you sure you want to delete this question?</string>
 </resources>
