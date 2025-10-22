@@ -56,6 +56,34 @@
             android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
 
+        <!-- Quiz Detail Activity -->
+        <activity
+            android:name=".QuizDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
+
+        <!-- Test Config Activity -->
+        <activity
+            android:name=".TestConfigActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
+
+        <!-- Take Test Activity -->
+        <activity
+            android:name=".TakeTestActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
+
+        <!-- Test Result Activity -->
+        <activity
+            android:name=".TestResultActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
+
     </application>
 
 </manifest>

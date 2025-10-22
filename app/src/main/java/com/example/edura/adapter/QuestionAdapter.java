@@ -92,10 +92,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
                 TextView tvAnswerText = answerView.findViewById(R.id.tvAnswerText);
                 TextView tvCorrectBadge = answerView.findViewById(R.id.tvCorrectBadge);
                 
-                char letter = (char) ('A' + i);
-                tvAnswerText.setText(letter + ". " + answer.getAnswerText());
+                tvAnswerText.setText(answer.getAnswerText());
                 
-                if (answer.isCorrect()) {
+                if (answer.getCorrect()) {
                     tvCorrectBadge.setVisibility(View.VISIBLE);
                 } else {
                     tvCorrectBadge.setVisibility(View.GONE);

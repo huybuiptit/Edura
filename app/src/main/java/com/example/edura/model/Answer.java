@@ -5,15 +5,15 @@ import java.util.Map;
 
 public class Answer {
     private String answerText;
-    private boolean isCorrect;
+    private boolean correct;  // Đổi tên field để match với Firestore
 
     // Empty constructor needed for Firestore
     public Answer() {
     }
 
-    public Answer(String answerText, boolean isCorrect) {
+    public Answer(String answerText, boolean correct) {
         this.answerText = answerText;
-        this.isCorrect = isCorrect;
+        this.correct = correct;
     }
 
     // Getters and Setters
@@ -25,19 +25,19 @@ public class Answer {
         this.answerText = answerText;
     }
 
-    public boolean isCorrect() {
-        return isCorrect;
+    public boolean getCorrect() {
+        return correct;
     }
 
     public void setCorrect(boolean correct) {
-        isCorrect = correct;
+        this.correct = correct;
     }
 
     // Convert to Map for Firestore
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("answerText", answerText);
-        map.put("isCorrect", isCorrect);
+        map.put("correct", correct);
         return map;
     }
 
@@ -45,7 +45,11 @@ public class Answer {
     public static Answer fromMap(Map<String, Object> map) {
         Answer answer = new Answer();
         answer.setAnswerText((String) map.get("answerText"));
-        answer.setCorrect((Boolean) map.get("isCorrect"));
+        Object correctValue = map.get("correct");
+        if (correctValue == null) {
+            correctValue = map.get("isCorrect"); // Fallback for old data
+        }
+        answer.setCorrect(correctValue != null ? (Boolean) correctValue : false);
         return answer;
     }
 }

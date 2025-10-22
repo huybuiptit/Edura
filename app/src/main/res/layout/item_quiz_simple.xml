@@ -80,9 +80,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_more"
+            android:src="@drawable/ic_more_vert"
             android:contentDescription="Menu"
-            app:tint="@color/gray_text" />
+            android:padding="8dp" />
 
     </RelativeLayout>
 

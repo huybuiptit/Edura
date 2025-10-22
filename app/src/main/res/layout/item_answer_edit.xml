@@ -11,11 +11,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:boxBackgroundMode="outline"
+        app:boxBackgroundMode="filled"
+        app:boxBackgroundColor="#F5F7FA"
         app:boxCornerRadiusBottomEnd="8dp"
         app:boxCornerRadiusBottomStart="8dp"
         app:boxCornerRadiusTopEnd="8dp"
-        app:boxCornerRadiusTopStart="8dp">
+        app:boxCornerRadiusTopStart="8dp"
+        app:hintEnabled="false">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etAnswer"
@@ -32,6 +34,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:buttonTint="#4169E1" />
+
+    <CheckBox
+        android:id="@+id/cbCorrect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:buttonTint="#4169E1"
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/btnDeleteAnswer"

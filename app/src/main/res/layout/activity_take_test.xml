@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F0F4F8">
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/back" />
+
+        <TextView
+            android:id="@+id/tvQuizTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Aptitude Test"
+            android:textColor="@color/dark_text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2:00"
+            android:textColor="@color/dark_text"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:drawableStart="@android:drawable/ic_menu_recent_history"
+            android:drawablePadding="4dp" />
+    </LinearLayout>
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progress="50"
+        android:progressTint="#4169E1" />
+
+    <!-- ViewPager for Questions -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerQuestions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="Quay lại"
+            android:textAllCaps="false"
+            android:textColor="@color/nav_selected"
+            android:backgroundTint="@color/white"
+            app:strokeColor="@color/nav_selected"
+            app:strokeWidth="2dp"
+            app:cornerRadius="12dp" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Tiếp theo"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:backgroundTint="#4169E1"
+            app:cornerRadius="12dp" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:text="Nộp bài"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:backgroundTint="#4169E1"
+            app:cornerRadius="12dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>
+

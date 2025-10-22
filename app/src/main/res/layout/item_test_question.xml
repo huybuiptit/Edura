@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Question Number -->
+    <TextView
+        android:id="@+id/tvQuestionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Questions 2 of 2"
+        android:textColor="@color/gray_text"
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Question Text -->
+    <TextView
+        android:id="@+id/tvQuestionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="If it takes 5 hours for 5 men to dig 5 holes, how long does it take for 100 men to dig 100 holes?"
+        android:textColor="@color/dark_text"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Single Choice Answers (Radio buttons) -->
+    <RadioGroup
+        android:id="@+id/radioGroupAnswers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <!-- Answer options will be added programmatically -->
+    </RadioGroup>
+
+    <!-- Multiple Choice Answers (Checkboxes) -->
+    <LinearLayout
+        android:id="@+id/checkboxGroupAnswers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <!-- Answer options will be added programmatically -->
+    </LinearLayout>
+
+    <!-- Fill in Blank Answer (Text input) -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fillInBlankLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etFillInBlank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập câu trả lời"
+            android:inputType="text"
+            android:padding="16dp"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
+

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Icon -->
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_quiz"
+            android:padding="8dp"
+            android:background="@drawable/bg_icon_container"
+            app:tint="@color/nav_selected" />
+
+        <!-- Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:id="@+id/tvQuizName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Math Quizz"
+                android:textColor="@color/dark_text"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="8/10 câu đúng"
+                android:textColor="@color/green_complete"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="14:30, 21/10/2025"
+                android:textColor="@color/gray_text"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Score Badge -->
+        <TextView
+            android:id="@+id/tvScoreBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="80%"
+            android:textColor="@color/dark_text"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

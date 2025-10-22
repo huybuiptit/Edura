@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F4F8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kết quả bài kiểm tra"
+            android:textColor="@color/dark_text"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Circular Progress -->
+        <FrameLayout
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="32dp"
+            android:rotation="-90">
+
+            <ProgressBar
+                android:id="@+id/circularProgress"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="80"
+                android:progressDrawable="@drawable/circular_progress"
+                android:background="@drawable/circular_background" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:rotation="90">
+
+                <TextView
+                    android:id="@+id/tvScorePercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="80%"
+                    android:textColor="@color/dark_text"
+                    android:textSize="48sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Điểm số"
+                    android:textColor="@color/gray_text"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- Stats Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- Time -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Thời gian hoàn thành"
+                        android:textColor="@color/gray_text"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvCompletionTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1:45"
+                        android:textColor="@color/dark_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Questions Completed -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Số câu hoàn thành"
+                        android:textColor="@color/gray_text"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvQuestionsCompleted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10/10"
+                        android:textColor="@color/dark_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Correct Answers -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Số câu làm đúng"
+                        android:textColor="@color/gray_text"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvCorrectAnswers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8/10"
+                        android:textColor="@color/green_complete"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnRetry"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Làm lại"
+                android:textAllCaps="false"
+                android:textColor="@color/nav_selected"
+                android:backgroundTint="@color/white"
+                app:strokeColor="@color/nav_selected"
+                app:strokeWidth="2dp"
+                app:cornerRadius="12dp" />
+
+            <Button
+                android:id="@+id/btnConfirm"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Đồng ý"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:backgroundTint="#4169E1"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+

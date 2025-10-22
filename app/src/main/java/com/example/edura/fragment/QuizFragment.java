@@ -186,8 +186,9 @@ public class QuizFragment extends Fragment implements QuizAdapter.OnQuizClickLis
 
     @Override
     public void onViewQuestions(Quiz quiz) {
-        // TODO: Navigate to questions activity or fragment
-        Toast.makeText(getContext(), "Xem câu hỏi: " + quiz.getQuizTitle(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), com.example.edura.QuizDetailActivity.class);
+        intent.putExtra("quizId", quiz.getQuizId());
+        startActivity(intent);
     }
 
     @Override

@@ -5,7 +5,7 @@
 Đã tạo đầy đủ tính năng tạo và chỉnh sửa Quiz với giao diện hiện đại, hỗ trợ 3 loại câu hỏi:
 - **Multiple Choice** - Chọn 1 đáp án đúng
 - **Multiple Response** - Chọn nhiều đáp án đúng
-- **Fill in Blank** - Điền vào chỗ trống (Coming soon)
+- **Fill in Blank** - Điền vào chỗ trống ✅
 
 ## Tính năng
 
@@ -41,9 +41,7 @@
 
 ```
 ┌─────────────────────────────────────┐
-│ ← Back      Tạo Quiz                │
-├─────────────────────────────────────┤
-│ Multiple Choice│Multiple Response│Fill│
+│ ←      Tạo Quiz                     │
 ├─────────────────────────────────────┤
 │                                     │
 │ Tiêu đề Quiz                        │
@@ -52,7 +50,8 @@
 │ └─────────────────────────────────┘ │
 │                                     │
 │ ╔═══════════════════════════════╗ │
-│ ║ Câu hỏi 1                  🗑️ ║ │
+│ ║ Multiple Choice│Multiple Response│Fill in Blank │
+│ ║ Câu hỏi                    🗑️ ║ │
 │ ║ ┌───────────────────────────┐ ║ │
 │ ║ │ Nhập nội dung câu hỏi     │ ║ │
 │ ║ └───────────────────────────┘ ║ │
@@ -90,22 +89,29 @@
 ### Layouts (3 files)
 
 1. **activity_create_quiz.xml**
-   - Top bar với back button
-   - TabLayout cho 3 loại câu hỏi
-   - Quiz title input
+   - Top bar với modern back icon
+   - Quiz title input (lighter color, no floating hint)
    - Questions container (LinearLayout)
    - Add question button
    - Create/Update quiz button (bottom)
 
 2. **item_question_edit.xml**
+   - TabLayout cho 3 loại câu hỏi (per question)
    - Question card với delete button
-   - Question text input
+   - Question text input (lighter color, no floating hint)
    - Answers container
    - Add answer button
 
 3. **item_answer_edit.xml**
-   - Answer text input
-   - Radio button cho correct answer
+   - Answer text input (lighter color, no floating hint)
+   - Radio button cho Single Choice / CheckBox cho Multiple Response
+   - Delete answer button
+
+4. **item_question_fill_blank.xml**
+   - TabLayout cho 3 loại câu hỏi (per question)
+   - Question card với delete button
+   - Question text input (lighter color, no floating hint)
+   - Single answer input field (no radio, no delete)
 
 ### Java Classes
 
@@ -268,6 +274,7 @@ private void createQuiz() {
 - Text Dark: #1A1A1A
 - Text Gray: #8E8E93
 - Background: #F0F4F8
+- Input Background: #F5F7FA (lighter)
 - White: #FFFFFF
 - Delete Red: #FF5252
 
@@ -287,26 +294,31 @@ private void createQuiz() {
 - Card Corner Radius: 12dp
 
 ### Components
-- **TabLayout**: Scrollable, 3 tabs
-- **TextInputLayout**: Outlined box style
+- **TabLayout**: Scrollable, 3 tabs per question (not global)
+- **TextInputLayout**: Filled box style (#F5F7FA), no floating hint
 - **MaterialCardView**: 12dp radius, 2dp elevation
 - **Button**: Filled (primary) or Outlined (secondary)
-- **RadioButton**: Single selection per question
+- **RadioButton**: Single selection for Multiple Choice questions
+- **CheckBox**: Multiple selection for Multiple Response questions (with double-click toggle)
+- **Back Icon**: Modern chevron left icon
 
 ## Files Created/Updated
 
 ### New Files
 1. `activity_create_quiz.xml` - Main create/edit layout
-2. `item_question_edit.xml` - Question card layout
-3. `item_answer_edit.xml` - Answer row layout
-4. `CreateQuizActivity.java` - Main activity logic
-5. `CREATE_QUIZ_GUIDE.md` - This documentation
+2. `item_question_edit.xml` - Question card layout (Multiple Choice/Response)
+3. `item_question_fill_blank.xml` - Fill in Blank question layout
+4. `item_answer_edit.xml` - Answer row layout
+5. `ic_back.xml` - Modern back icon drawable
+6. `CreateQuizActivity.java` - Main activity logic
+7. `CREATE_QUIZ_GUIDE.md` - This documentation
 
 ### Updated Files
 1. `item_quiz_simple.xml` - Added menu button, full date/time
 2. `QuizAdapter.java` - Handle menu, format date
 3. `QuizFragment.java` - Navigate to CreateQuizActivity
-4. `AndroidManifest.xml` - Register CreateQuizActivity
+4. `themes.xml` - Added TabTextStyle for smaller tab text
+5. `AndroidManifest.xml` - Register CreateQuizActivity
 
 ## Testing Checklist
 
@@ -325,21 +337,24 @@ private void createQuiz() {
 - [x] Menu 3 dots works
 - [ ] Test with many questions
 - [ ] Test validation errors
-- [ ] Test Multiple Response mode
-- [ ] Implement Fill in Blank mode
+- [x] Test Multiple Response mode
+- [x] Implement Fill in Blank mode
+- [x] Per-question type selection
+- [x] Modern back icon
+- [x] Lighter input field colors
+- [x] Remove floating hint labels
 
 ## Known Limitations
 
-1. **Fill in Blank**: Not yet implemented (Tab 3)
-2. **Multiple Response**: RadioButton behavior needs CheckBox for multi-select
-3. **Image Support**: No image upload for questions/answers
-4. **Rich Text**: No formatting options for questions
-5. **Reorder**: Cannot drag-drop to reorder questions
+1. **Image Support**: No image upload for questions/answers
+2. **Rich Text**: No formatting options for questions
+3. **Reorder**: Cannot drag-drop to reorder questions
+4. **Question Type Switch**: Switching question type clears answers (by design)
 
 ## Future Enhancements
 
-1. ✨ Multiple Response với CheckBox thay vì RadioButton
-2. ✨ Fill in Blank question type
+1. ✅ Multiple Response với RadioButton (toggle behavior)
+2. ✅ Fill in Blank question type
 3. ✨ Image upload cho câu hỏi và đáp án
 4. ✨ Rich text editor (bold, italic, etc.)
 5. ✨ Drag & drop để sắp xếp câu hỏi
@@ -348,6 +363,7 @@ private void createQuiz() {
 8. ✨ Preview quiz before saving
 9. ✨ Quiz categories/tags
 10. ✨ Share quiz với others
+11. ✨ Preserve answers when switching question types
 
 ## Troubleshooting
 
@@ -383,8 +399,11 @@ private void createQuiz() {
 
 **Features:**
 - ✅ Tạo quiz mới với nhiều câu hỏi
-- ✅ 3 tabs cho 3 loại câu hỏi (1 active, 2 coming soon)
+- ✅ 3 loại câu hỏi: Multiple Choice, Multiple Response, Fill in Blank
+- ✅ Per-question type selection (mỗi câu có thể chọn loại riêng)
 - ✅ Dynamic add/remove questions và answers
+- ✅ Dynamic question type switching
+- ✅ CheckBox cho Multiple Response với double-click toggle
 - ✅ Edit quiz existing
 - ✅ Delete quiz với confirmation
 - ✅ Quiz list với đầy đủ thông tin
@@ -394,8 +413,13 @@ private void createQuiz() {
 
 **UI/UX:**
 - ✅ Giao diện hiện đại, clean
-- ✅ Back button ở top
-- ✅ TabLayout cho question types
+- ✅ Modern back icon (chevron left)
+- ✅ TabLayout per question (không phải global)
+- ✅ Lighter input field colors (#F5F7FA)
+- ✅ No floating hint labels (cleaner look)
+- ✅ Fill in Blank với single answer field
+- ✅ CheckBox cho Multiple Response (hình vuông)
+- ✅ Double-click toggle cho CheckBox
 - ✅ Material Design components
 - ✅ Smooth interactions
 

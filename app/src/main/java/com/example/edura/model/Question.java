@@ -7,8 +7,9 @@ import java.util.Map;
 
 public class Question {
     public enum QuestionType {
-        SINGLE_CHOICE,  // Chọn 1 trong 4 đáp án
-        MULTIPLE_CHOICE // Chọn nhiều đáp án
+        SINGLE_CHOICE,   // Chọn 1 trong 4 đáp án
+        MULTIPLE_CHOICE, // Chọn nhiều đáp án
+        FILL_IN_BLANK    // Điền vào chỗ trống
     }
 
     private String questionId;

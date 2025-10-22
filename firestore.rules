@@ -31,6 +31,25 @@ service cloud.firestore {
                     && resource.data.createdBy == request.auth.uid;
     }
     
+    // Test Results collection rules
+    match /test_results/{resultId} {
+      // Allow read if authenticated and user is the owner
+      allow read: if isAuthenticated() 
+                  && resource.data.userId == request.auth.uid;
+      
+      // Allow create if authenticated and user is the owner
+      allow create: if isAuthenticated() 
+                    && request.resource.data.userId == request.auth.uid;
+      
+      // Allow update if authenticated and user is the owner
+      allow update: if isAuthenticated() 
+                    && resource.data.userId == request.auth.uid;
+      
+      // Allow delete if authenticated and user is the owner
+      allow delete: if isAuthenticated() 
+                    && resource.data.userId == request.auth.uid;
+    }
+    
     // Default rule: deny all other access
     match /{document=**} {
       allow read, write: if false;

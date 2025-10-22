@@ -2,7 +2,7 @@
     <string name="app_name">Edura</string>
     
     <!-- Login Screen -->
-    <string name="ai_quiz_generator">AI Quiz\nGenerator</string>
+    <string name="ai_quiz_generator">AI Quizz\nGenerator</string>
     <string name="welcome_back">Welcome Back</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -28,7 +28,7 @@
     
     <!-- Home Screen -->
     <string name="hi">Hi, %s</string>
-    <string name="play_and_win">AI Quiz Generator</string>
+    <string name="play_and_win">AI Quizz Generator</string>
     <string name="start_quiz_enjoy">Create personalized quizzes with AI</string>
     <string name="get_started">Create Now</string>
     <string name="categories">Categories</string>
@@ -44,20 +44,35 @@
     <string name="points">%d</string>
     
     <!-- Navigation -->
-    <string name="nav_quiz">Quiz</string>
+    <string name="nav_quiz">Quizz</string>
     <string name="nav_categories">Categories</string>
     <string name="nav_leaderboard">Leaderboard</string>
     <string name="nav_profile">Profile</string>
     
-    <!-- Quiz Screen -->
+    <!-- Settings/Profile -->
+    <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_dark_mode">Chế độ tối</string>
+    <string name="settings_push_notifications">Thông báo đẩy</string>
+    <string name="settings_sound_effects">Hiệu ứng âm thanh</string>
+    <string name="settings_about">Về Edura</string>
+    <string name="settings_logout">Đăng xuất</string>
+    <string name="settings_delete_account">Xóa tài khoản</string>
+    <string name="settings_select_language">Chọn ngôn ngữ</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_vi">Tiếng Việt</string>
+    <string name="settings_account_deleted">Đã xóa tài khoản</string>
+    <string name="settings_delete_confirm_title">Xóa tài khoản</string>
+    <string name="settings_delete_confirm_message">Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác.</string>
+    
+    <!-- Quizz Screen -->
     <string name="my_quizzes">My Quizzes</string>
     <string name="quiz_count">%d quizzes</string>
     <string name="no_quizzes">No quizzes yet</string>
-    <string name="tap_to_create_quiz">Tap + to create your first quiz</string>
-    <string name="add_quiz">Add Quiz</string>
-    <string name="create_new_quiz">Create New Quiz</string>
-    <string name="edit_quiz">Edit Quiz</string>
-    <string name="quiz_title">Quiz Title</string>
+    <string name="tap_to_create_quiz">Tap + to create your first quizz</string>
+    <string name="add_quiz">Add Quizz</string>
+    <string name="create_new_quiz">Create New Quizz</string>
+    <string name="edit_quiz">Edit Quizz</string>
+    <string name="quiz_title">Quizz Title</string>
     <string name="view_questions">View Questions</string>
     <string name="add_question">Add Question</string>
     
@@ -78,17 +93,17 @@
     <string name="tap_to_add_question">Tap + to add your first question</string>
     
     <!-- Actions -->
-    <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
-    <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
-    <string name="back">Back</string>
+    <string name="save">Lưu</string>
+    <string name="cancel">Hủy</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="delete">Xóa</string>
+    <string name="back">Quay lại</string>
     <string name="menu">Menu</string>
     
     <!-- Messages -->
-    <string name="quiz_created">Quiz created successfully</string>
-    <string name="quiz_updated">Quiz updated successfully</string>
-    <string name="quiz_deleted">Quiz deleted successfully</string>
+    <string name="quiz_created">Quizz created successfully</string>
+    <string name="quiz_updated">Quizz updated successfully</string>
+    <string name="quiz_deleted">Quizz deleted successfully</string>
     <string name="question_created">Question created successfully</string>
     <string name="question_deleted">Question deleted successfully</string>
     <string name="error_empty_title">Please enter quiz title</string>

@@ -93,31 +93,26 @@
                 android:minLines="2" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Answers Container -->
-        <LinearLayout
-            android:id="@+id/answersContainer"
+        <!-- Single Answer Input for Fill in Blank -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="#F5F7FA"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:hintEnabled="false">
 
-            <!-- Answer items will be added dynamically -->
-
-        </LinearLayout>
-
-        <!-- Add Answer Button -->
-        <Button
-            android:id="@+id/btnAddAnswer"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/white"
-            android:text="+ Thêm câu trả lời"
-            android:textColor="#4169E1"
-            android:textSize="13sp"
-            android:textAllCaps="false"
-            app:strokeColor="#4169E1"
-            app:strokeWidth="1dp"
-            app:cornerRadius="20dp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nhập câu trả lời"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
