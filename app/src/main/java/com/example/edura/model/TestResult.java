@@ -134,16 +134,18 @@ public class TestResult {
         result.setQuizId((String) map.get("quizId"));
         result.setQuizTitle((String) map.get("quizTitle"));
         result.setUserId((String) map.get("userId"));
-        result.setTotalQuestions(((Long) map.get("totalQuestions")).intValue());
-        result.setCorrectAnswers(((Long) map.get("correctAnswers")).intValue());
-        result.setQuestionsCompleted(((Long) map.get("questionsCompleted")).intValue());
-        result.setCompletionTime((Long) map.get("completionTime"));
-        result.setTimestamp((Long) map.get("timestamp"));
+        
+        // Safe conversion for numeric fields - handle both Long and Double
+        result.setTotalQuestions(safeIntFromNumber(map.get("totalQuestions")));
+        result.setCorrectAnswers(safeIntFromNumber(map.get("correctAnswers")));
+        result.setQuestionsCompleted(safeIntFromNumber(map.get("questionsCompleted")));
+        result.setCompletionTime(safeLongFromNumber(map.get("completionTime")));
+        result.setTimestamp(safeLongFromNumber(map.get("timestamp")));
         
         // Handle scorePercentage with fallback
         Object scoreObj = map.get("scorePercentage");
         if (scoreObj != null) {
-            result.setScorePercentage(((Long) scoreObj).intValue());
+            result.setScorePercentage(safeIntFromNumber(scoreObj));
         } else {
             // Fallback: calculate from correctAnswers (for old data)
             int total = result.getTotalQuestions();
@@ -152,6 +154,50 @@ public class TestResult {
         }
         
         return result;
+    }
+    
+    // Helper method to safely convert Number to int
+    private static int safeIntFromNumber(Object obj) {
+        if (obj == null) return 0;
+        
+        if (obj instanceof Long) {
+            return ((Long) obj).intValue();
+        } else if (obj instanceof Double) {
+            return ((Double) obj).intValue();
+        } else if (obj instanceof Integer) {
+            return (Integer) obj;
+        } else if (obj instanceof Number) {
+            return ((Number) obj).intValue();
+        }
+        
+        // Try to parse as string
+        try {
+            return Integer.parseInt(obj.toString());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+    
+    // Helper method to safely convert Number to long
+    private static long safeLongFromNumber(Object obj) {
+        if (obj == null) return 0L;
+        
+        if (obj instanceof Long) {
+            return (Long) obj;
+        } else if (obj instanceof Double) {
+            return ((Double) obj).longValue();
+        } else if (obj instanceof Integer) {
+            return ((Integer) obj).longValue();
+        } else if (obj instanceof Number) {
+            return ((Number) obj).longValue();
+        }
+        
+        // Try to parse as string
+        try {
+            return Long.parseLong(obj.toString());
+        } catch (NumberFormatException e) {
+            return 0L;
+        }
     }
 }
 

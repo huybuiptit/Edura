@@ -37,6 +37,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     public void setQuizList(List<Quiz> quizList) {
         this.quizList = quizList;
+        android.util.Log.d("QuizAdapter", "setQuizList called with " + quizList.size() + " quizzes");
         notifyDataSetChanged();
     }
 
@@ -50,12 +51,14 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull QuizViewHolder holder, int position) {
+        android.util.Log.d("QuizAdapter", "onBindViewHolder called for position " + position);
         Quiz quiz = quizList.get(position);
         holder.bind(quiz);
     }
 
     @Override
     public int getItemCount() {
+        android.util.Log.d("QuizAdapter", "getItemCount() called, returning " + quizList.size());
         return quizList.size();
     }
 

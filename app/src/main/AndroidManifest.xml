@@ -49,6 +49,13 @@
             android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
 
+        <!-- Create AI Quiz Activity -->
+        <activity
+            android:name=".CreateAIQuizActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
+
         <!-- Questions List Activity -->
         <activity
             android:name=".QuestionsListActivity"

@@ -108,8 +108,8 @@ public class Quiz {
         quiz.setQuizId((String) map.get("quizId"));
         quiz.setQuizTitle((String) map.get("quizTitle"));
         quiz.setCreatedBy((String) map.get("createdBy"));
-        quiz.setCreatedAt(map.get("createdAt") != null ? (Long) map.get("createdAt") : 0);
-        quiz.setUpdatedAt(map.get("updatedAt") != null ? (Long) map.get("updatedAt") : 0);
+        quiz.setCreatedAt(map.get("createdAt") != null ? safeLongFromNumber(map.get("createdAt")) : 0);
+        quiz.setUpdatedAt(map.get("updatedAt") != null ? safeLongFromNumber(map.get("updatedAt")) : 0);
         
         List<Map<String, Object>> questionMaps = (List<Map<String, Object>>) map.get("questions");
         List<Question> questions = new ArrayList<>();
@@ -121,6 +121,28 @@ public class Quiz {
         quiz.setQuestions(questions);
         
         return quiz;
+    }
+    
+    // Helper method to safely convert Number to long
+    private static long safeLongFromNumber(Object obj) {
+        if (obj == null) return 0L;
+        
+        if (obj instanceof Long) {
+            return (Long) obj;
+        } else if (obj instanceof Double) {
+            return ((Double) obj).longValue();
+        } else if (obj instanceof Integer) {
+            return ((Integer) obj).longValue();
+        } else if (obj instanceof Number) {
+            return ((Number) obj).longValue();
+        }
+        
+        // Try to parse as string
+        try {
+            return Long.parseLong(obj.toString());
+        } catch (NumberFormatException e) {
+            return 0L;
+        }
     }
 }
 

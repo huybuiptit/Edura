@@ -63,13 +63,40 @@ public class QuizFragment extends Fragment implements QuizAdapter.OnQuizClickLis
 
     private void setupRecyclerView() {
         quizAdapter = new QuizAdapter(this);
-        rvQuizzes.setLayoutManager(new LinearLayoutManager(getContext()));
+        
+        // Create a custom LinearLayoutManager that doesn't scroll
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false; // Disable vertical scrolling
+            }
+            
+            @Override
+            public void onLayoutCompleted(RecyclerView.State state) {
+                super.onLayoutCompleted(state);
+                // Force RecyclerView to measure all items
+                android.util.Log.d("QuizFragment", "RecyclerView layout completed, item count: " + getItemCount());
+            }
+        };
+        
+        rvQuizzes.setLayoutManager(layoutManager);
+        rvQuizzes.setHasFixedSize(false);
+        rvQuizzes.setNestedScrollingEnabled(false);
+        rvQuizzes.setOverScrollMode(View.OVER_SCROLL_NEVER);
         rvQuizzes.setAdapter(quizAdapter);
+        
+        // Force RecyclerView to measure all items
+        rvQuizzes.post(() -> {
+            android.util.Log.d("QuizFragment", "RecyclerView post: item count = " + quizAdapter.getItemCount());
+            rvQuizzes.requestLayout();
+        });
     }
 
     private void setupListeners() {
         cardAiQuiz.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Tạo câu hỏi với AI - Đang phát triển", Toast.LENGTH_SHORT).show();
+            // Navigate to CreateAIQuizActivity
+            Intent intent = new Intent(getContext(), com.example.edura.CreateAIQuizActivity.class);
+            startActivity(intent);
         });
         
         cardManualQuiz.setOnClickListener(v -> {
@@ -82,25 +109,112 @@ public class QuizFragment extends Fragment implements QuizAdapter.OnQuizClickLis
     private void loadQuizzes() {
         String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : "";
         
+        android.util.Log.d("QuizFragment", "Starting to load quizzes for user: " + userId);
+
+        // First try: Load quizzes with proper createdBy field
         db.collection("quizzes")
                 .whereEqualTo("createdBy", userId)
                 .orderBy("createdAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Toast.makeText(getContext(), "Lỗi tải quiz: " + error.getMessage(), 
-                                Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    android.util.Log.d("QuizFragment", "Found " + querySnapshot.size() + " quizzes with createdBy=" + userId);
+                    
                     quizList.clear();
-                    if (value != null) {
-                        for (QueryDocumentSnapshot doc : value) {
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        try {
                             Quiz quiz = Quiz.fromMap(doc.getData());
                             quiz.setQuizId(doc.getId());
                             quizList.add(quiz);
+                            android.util.Log.d("QuizFragment", "Added quiz: " + quiz.getQuizTitle());
+                        } catch (Exception e) {
+                            android.util.Log.e("QuizFragment", "Error parsing quiz " + doc.getId() + ": " + e.getMessage());
                         }
                     }
-
+                    
+                    // Second try: Load quizzes with null createdBy (legacy data)
+                    loadLegacyQuizzes(userId);
+                })
+                .addOnFailureListener(e -> {
+                    android.util.Log.e("QuizFragment", "Error loading quizzes: " + e.getMessage());
+                    Toast.makeText(getContext(), "Lỗi tải quiz: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+    
+    private void loadLegacyQuizzes(String userId) {
+        // Load quizzes with null createdBy (legacy data)
+        db.collection("quizzes")
+                .whereEqualTo("createdBy", null)
+                .orderBy("createdAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    android.util.Log.d("QuizFragment", "Found " + querySnapshot.size() + " legacy quizzes with createdBy=null");
+                    
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        try {
+                            Quiz quiz = Quiz.fromMap(doc.getData());
+                            quiz.setQuizId(doc.getId());
+                            quizList.add(quiz);
+                            android.util.Log.d("QuizFragment", "Added legacy quiz: " + quiz.getQuizTitle());
+                        } catch (Exception e) {
+                            android.util.Log.e("QuizFragment", "Error parsing legacy quiz " + doc.getId() + ": " + e.getMessage());
+                        }
+                    }
+                    
+                    // Third try: Load ALL quizzes and filter manually (fallback)
+                    loadAllQuizzesFallback(userId);
+                })
+                .addOnFailureListener(e -> {
+                    android.util.Log.e("QuizFragment", "Error loading legacy quizzes: " + e.getMessage());
+                    // Continue to fallback method
+                    loadAllQuizzesFallback(userId);
+                });
+    }
+    
+    private void loadAllQuizzesFallback(String userId) {
+        // Fallback: Load ALL quizzes and filter manually
+        db.collection("quizzes")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    android.util.Log.d("QuizFragment", "Fallback: Found " + querySnapshot.size() + " total quizzes in database");
+                    
+                    int addedCount = 0;
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        try {
+                            Quiz quiz = Quiz.fromMap(doc.getData());
+                            quiz.setQuizId(doc.getId());
+                            
+                            // Check if this quiz is already in our list
+                            boolean alreadyExists = false;
+                            for (Quiz existingQuiz : quizList) {
+                                if (existingQuiz.getQuizId().equals(quiz.getQuizId())) {
+                                    alreadyExists = true;
+                                    break;
+                                }
+                            }
+                            
+                            if (!alreadyExists) {
+                                String createdBy = quiz.getCreatedBy();
+                                // Include if no createdBy field, empty, or matches user
+                                if (createdBy == null || createdBy.isEmpty() || userId.equals(createdBy)) {
+                                    quizList.add(quiz);
+                                    addedCount++;
+                                    android.util.Log.d("QuizFragment", "Added fallback quiz: " + quiz.getQuizTitle() + " (createdBy: " + createdBy + ")");
+                                }
+                            }
+                        } catch (Exception e) {
+                            android.util.Log.e("QuizFragment", "Error parsing fallback quiz " + doc.getId() + ": " + e.getMessage());
+                        }
+                    }
+                    
+                    // Sort by createdAt descending
+                    quizList.sort((a, b) -> Long.compare(b.getCreatedAt(), a.getCreatedAt()));
+                    
+                    android.util.Log.d("QuizFragment", "Final result: " + quizList.size() + " quizzes loaded (added " + addedCount + " from fallback)");
+                    updateUI();
+                })
+                .addOnFailureListener(e -> {
+                    android.util.Log.e("QuizFragment", "Error in fallback loading: " + e.getMessage());
+                    Toast.makeText(getContext(), "Lỗi tải quiz: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     updateUI();
                 });
     }
@@ -108,12 +222,38 @@ public class QuizFragment extends Fragment implements QuizAdapter.OnQuizClickLis
     private void updateUI() {
         quizAdapter.setQuizList(quizList);
         
+        // Debug: Show detailed info about loaded quizzes
+        android.util.Log.d("QuizFragment", "=== QUIZ LOADING SUMMARY ===");
+        android.util.Log.d("QuizFragment", "Total quizzes loaded: " + quizList.size());
+        for (int i = 0; i < quizList.size(); i++) {
+            Quiz quiz = quizList.get(i);
+            android.util.Log.d("QuizFragment", "Quiz " + (i+1) + ": " + quiz.getQuizTitle() + 
+                    " (ID: " + quiz.getQuizId() + ", createdBy: " + quiz.getCreatedBy() + 
+                    ", createdAt: " + quiz.getCreatedAt() + ")");
+        }
+        android.util.Log.d("QuizFragment", "=============================");
+        
         if (quizList.isEmpty()) {
             rvQuizzes.setVisibility(View.GONE);
             emptyState.setVisibility(View.VISIBLE);
+            android.util.Log.d("QuizFragment", "Showing empty state - no quizzes found");
         } else {
             rvQuizzes.setVisibility(View.VISIBLE);
             emptyState.setVisibility(View.GONE);
+            android.util.Log.d("QuizFragment", "Showing " + quizList.size() + " quizzes in RecyclerView");
+            
+            // Force RecyclerView to refresh and show all items
+            rvQuizzes.post(() -> {
+                android.util.Log.d("QuizFragment", "RecyclerView refresh: adapter item count = " + quizAdapter.getItemCount());
+                quizAdapter.notifyDataSetChanged();
+                rvQuizzes.requestLayout();
+                
+                // Additional debug: check RecyclerView child count
+                rvQuizzes.postDelayed(() -> {
+                    int childCount = rvQuizzes.getChildCount();
+                    android.util.Log.d("QuizFragment", "RecyclerView child count: " + childCount + " (should be " + quizList.size() + ")");
+                }, 100);
+            });
         }
     }
 
@@ -222,6 +362,14 @@ public class QuizFragment extends Fragment implements QuizAdapter.OnQuizClickLis
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .show();
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Reload quizzes when fragment becomes visible
+        android.util.Log.d("QuizFragment", "Fragment resumed, reloading quizzes...");
+        loadQuizzes();
     }
 }
 

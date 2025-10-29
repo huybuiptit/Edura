@@ -23,9 +23,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CreateQuizActivity extends AppCompatActivity {
 
@@ -40,6 +42,7 @@ public class CreateQuizActivity extends AppCompatActivity {
     private List<QuestionView> questionViews = new ArrayList<>();
     
     private String quizIdToEdit = null; // For edit mode
+    private boolean isAIGeneratedQuiz = false; // For AI-generated quiz mode
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +55,20 @@ public class CreateQuizActivity extends AppCompatActivity {
         // Check if editing existing quiz
         quizIdToEdit = getIntent().getStringExtra("quizId");
         
+        // Check if AI-generated quiz
+        isAIGeneratedQuiz = getIntent().getBooleanExtra("aiGeneratedQuiz", false);
+        
         initViews();
         setupListeners();
         
-        // Add first default question
-        addQuestionCard();
-        
-        // Load quiz data if editing
-        if (quizIdToEdit != null) {
+        // Load quiz data based on mode
+        if (isAIGeneratedQuiz) {
+            loadAIGeneratedQuiz();
+        } else if (quizIdToEdit != null) {
             loadQuizForEdit();
+        } else {
+            // Add first default question for manual creation
+            addQuestionCard();
         }
     }
 
@@ -80,6 +88,8 @@ public class CreateQuizActivity extends AppCompatActivity {
         btnCreateQuiz.setOnClickListener(v -> {
             if (quizIdToEdit != null) {
                 updateQuiz();
+            } else if (isAIGeneratedQuiz) {
+                saveAIGeneratedQuiz();
             } else {
                 createQuiz();
             }
@@ -248,6 +258,91 @@ public class CreateQuizActivity extends AppCompatActivity {
                         
                         btnCreateQuiz.setText("Cập nhật Quiz");
                     }
+                });
+    }
+
+    private void loadAIGeneratedQuiz() {
+        String quizDataJson = getIntent().getStringExtra("quizData");
+        if (quizDataJson == null) {
+            Toast.makeText(this, "Lỗi: Không có dữ liệu quiz", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        try {
+            Gson gson = new Gson();
+            Map<String, Object> quizMap = gson.fromJson(quizDataJson, Map.class);
+            Quiz quiz = Quiz.fromMap(quizMap);
+            
+            // Set quiz title
+            etQuizTitle.setText(quiz.getQuizTitle());
+            
+            // Clear default question if any
+            questionsContainer.removeAllViews();
+            questionViews.clear();
+            
+            // Load AI-generated questions
+            for (Question question : quiz.getQuestions()) {
+                Question.QuestionType type = question.getQuestionType() != null ? 
+                        question.getQuestionType() : Question.QuestionType.SINGLE_CHOICE;
+                addQuestionCard(type);
+                QuestionView lastQv = questionViews.get(questionViews.size() - 1);
+                lastQv.setQuestionText(question.getQuestionText());
+                
+                if (type != Question.QuestionType.FILL_IN_BLANK) {
+                    lastQv.clearAnswers();
+                    for (Answer answer : question.getAnswers()) {
+                        lastQv.addAnswerField(answer.getAnswerText(), answer.getCorrect());
+                    }
+                } else {
+                    // For fill in blank, just set the answer text
+                    if (!question.getAnswers().isEmpty()) {
+                        lastQv.setFillInBlankAnswer(question.getAnswers().get(0).getAnswerText());
+                    }
+                }
+            }
+            
+            // Change button text to "Lưu Quiz"
+            btnCreateQuiz.setText("Lưu Quiz");
+            
+        } catch (Exception e) {
+            Toast.makeText(this, "Lỗi parse dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    private void saveAIGeneratedQuiz() {
+        String title = etQuizTitle.getText() != null ? etQuizTitle.getText().toString().trim() : "";
+        
+        if (title.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập tiêu đề quiz", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<Question> questions = collectQuestions();
+        if (questions.isEmpty()) {
+            Toast.makeText(this, "Vui lòng thêm ít nhất 1 câu hỏi", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : "";
+        Quiz quiz = new Quiz(title, userId);
+        quiz.setQuestions(questions);
+
+        // Show saving progress
+        btnCreateQuiz.setEnabled(false);
+        btnCreateQuiz.setText("Đang lưu...");
+
+        db.collection("quizzes")
+                .add(quiz.toMap())
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this, "Lưu quiz thành công!", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    btnCreateQuiz.setEnabled(true);
+                    btnCreateQuiz.setText("Lưu Quiz");
                 });
     }
 
