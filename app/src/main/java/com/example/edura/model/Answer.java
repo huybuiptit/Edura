@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class Answer {
     private String answerText;
-    private boolean correct;  // Đổi tên field để match với Firestore
+    private boolean correct;
 
-    // Empty constructor needed for Firestore
+
     public Answer() {
     }
 
@@ -16,7 +16,7 @@ public class Answer {
         this.correct = correct;
     }
 
-    // Getters and Setters
+
     public String getAnswerText() {
         return answerText;
     }
@@ -46,9 +46,6 @@ public class Answer {
         Answer answer = new Answer();
         answer.setAnswerText((String) map.get("answerText"));
         Object correctValue = map.get("correct");
-        if (correctValue == null) {
-            correctValue = map.get("isCorrect"); // Fallback for old data
-        }
         answer.setCorrect(correctValue != null ? (Boolean) correctValue : false);
         return answer;
     }

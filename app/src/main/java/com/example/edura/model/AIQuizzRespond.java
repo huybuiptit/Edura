@@ -12,7 +12,6 @@ public class AIQuizzRespond {
     
     private static final String TAG = "AIQuizzRespond";
     
-    // Support both old and new backend format
     @SerializedName("success")
     private Boolean success;
     
@@ -25,7 +24,6 @@ public class AIQuizzRespond {
     @SerializedName("error")
     private String error;
     
-    // New backend format fields
     @SerializedName("quiz_id")
     private String quizId;
     
@@ -48,19 +46,15 @@ public class AIQuizzRespond {
         this.questions = new ArrayList<>();
     }
 
-    // Getters and Setters
     public boolean isSuccess() {
-        // Check old format
         if (success != null) {
             return success;
         }
         
-        // Check new format - success if quiz array exists and has data
         if (quiz != null && !quiz.isEmpty()) {
-            // Check if first item has error
             Map<String, Object> firstItem = quiz.get(0);
             if (firstItem != null && firstItem.containsKey("error")) {
-                return false; // Has error
+                return false;
             }
             return true;
         }
@@ -81,12 +75,10 @@ public class AIQuizzRespond {
     }
 
     public List<AIQuestion> getQuestions() {
-        // If old format has questions, return them
         if (questions != null && !questions.isEmpty()) {
             return questions;
         }
         
-        // Parse new backend format
         if (quiz != null && !quiz.isEmpty()) {
             return parseQuizArray();
         }
@@ -99,7 +91,6 @@ public class AIQuizzRespond {
     }
 
     public String getError() {
-        // Check old format error
         if (error != null && !error.trim().isEmpty()) {
             return error;
         }
@@ -108,9 +99,20 @@ public class AIQuizzRespond {
         if (quiz != null && !quiz.isEmpty()) {
             Map<String, Object> firstItem = quiz.get(0);
             if (firstItem != null && firstItem.containsKey("error")) {
+                // Check if we have raw_output and can parse questions from it
                 String rawOutput = (String) firstItem.get("raw_output");
+                if (rawOutput != null && !rawOutput.isEmpty()) {
+                    // Try to parse raw output
+                    List<AIQuestion> parsedQuestions = parseGeminiRawOutput(rawOutput);
+                    if (!parsedQuestions.isEmpty()) {
+                        // Successfully parsed questions from raw_output, no error
+                        Log.d(TAG, "Parsed " + parsedQuestions.size() + " questions from raw_output, ignoring backend error");
+                        return null;
+                    }
+                }
+                // Could not parse raw_output, return error
                 return "Backend error: " + firstItem.get("error") + 
-                       (rawOutput != null ? "\nAttempting to parse raw output..." : "");
+                       (rawOutput != null ? "\nFailed to parse raw output" : "");
             }
         }
         
@@ -142,20 +144,86 @@ public class AIQuizzRespond {
                     try {
                         AIQuestion question = new AIQuestion();
                         question.setQuestionText((String) item.get("question"));
-                        question.setQuestionType("Single Choice");
+                        
+                        // Get question type from backend, or auto-detect based on fields
+                        String questionType = (String) item.get("type");
+                        Log.d(TAG, "Backend type field: " + questionType);
+                        
+                        if (questionType == null || questionType.isEmpty()) {
+                            // Auto-detect type based on available fields
+                            questionType = autoDetectQuestionType(item);
+                        }
+                        
+                        Log.d(TAG, "Final questionType: " + questionType);
+                        question.setQuestionType(questionType);
 
                         List<AIAnswer> answers = new ArrayList<>();
-                        List<String> options = (List<String>) item.get("options");
-                        String correct = (String) item.get("correct_answer");
-
-                        if (options != null) {
-                            for (String opt : options) {
-                                AIAnswer ans = new AIAnswer();
-                                ans.setAnswerText(opt);
-                                ans.setCorrect(opt.equals(correct));
-                                answers.add(ans);
+                        
+                        // Parse based on question type
+                        if ("MULTIPLE_CHOICE".equalsIgnoreCase(questionType)) {
+                            // MULTIPLE_CHOICE: has options and multiple correct answers
+                            List<String> options = (List<String>) item.get("options");
+                            Object correctAnswersObj = item.get("correct_answers");
+                            List<String> correctAnswers = new ArrayList<>();
+                            
+                            if (correctAnswersObj instanceof List) {
+                                correctAnswers = (List<String>) correctAnswersObj;
+                            } else if (correctAnswersObj instanceof String) {
+                                correctAnswers.add((String) correctAnswersObj);
+                            }
+                            
+                            if (options != null) {
+                                for (String opt : options) {
+                                    AIAnswer ans = new AIAnswer();
+                                    ans.setAnswerText(opt);
+                                    ans.setCorrect(correctAnswers.contains(opt));
+                                    answers.add(ans);
+                                }
+                            }
+                        } else if ("FILL_IN_BLANK".equalsIgnoreCase(questionType)) {
+                            // FILL_IN_BLANK: has answer, answers, or correct_answer field (when no options)
+                            Object answerObj = item.get("answer");
+                            if (answerObj == null) {
+                                answerObj = item.get("answers");
+                            }
+                            if (answerObj == null) {
+                                // Fallback to correct_answer for FILL_IN_BLANK
+                                answerObj = item.get("correct_answer");
+                            }
+                            
+                            Log.d(TAG, "FILL_IN_BLANK detected - answerObj: " + answerObj);
+                            
+                            List<String> correctAnswers = new ArrayList<>();
+                            if (answerObj instanceof List) {
+                                correctAnswers = (List<String>) answerObj;
+                            } else if (answerObj instanceof String) {
+                                correctAnswers.add((String) answerObj);
+                            }
+                            
+                            Log.d(TAG, "FILL_IN_BLANK - correctAnswers count: " + correctAnswers.size());
+                            
+                            // For FILL_IN_BLANK, create answer entries for all correct answers
+                            for (String ans : correctAnswers) {
+                                AIAnswer aiAnswer = new AIAnswer();
+                                aiAnswer.setAnswerText(ans);
+                                aiAnswer.setCorrect(true);
+                                answers.add(aiAnswer);
+                            }
+                        } else {
+                            // DEFAULT: SINGLE_CHOICE - has options and single correct answer
+                            List<String> options = (List<String>) item.get("options");
+                            String correct = (String) item.get("correct_answer");
+                            
+                            if (options != null) {
+                                for (String opt : options) {
+                                    AIAnswer ans = new AIAnswer();
+                                    ans.setAnswerText(opt);
+                                    ans.setCorrect(opt.equals(correct));
+                                    answers.add(ans);
+                                }
                             }
                         }
+                        
                         question.setAnswers(answers);
                         result.add(question);
                     } catch (Exception e) {
@@ -172,14 +240,62 @@ public class AIQuizzRespond {
     }
     
     /**
+     * Auto-detect question type based on available fields in the data
+     * Priority order:
+     * 1. If has "answer" or "answers" (no options) -> FILL_IN_BLANK
+     * 2. If has "correct_answer" (singular) but no "options" -> FILL_IN_BLANK
+     * 3. If has "correct_answers" (plural) -> MULTIPLE_CHOICE
+     * 4. Otherwise -> SINGLE_CHOICE
+     */
+    private String autoDetectQuestionType(Map<String, Object> item) {
+        boolean hasAnswer = item.containsKey("answer") || item.containsKey("answers");
+        boolean hasCorrectAnswer = item.containsKey("correct_answer");
+        boolean hasCorrectAnswers = item.containsKey("correct_answers");
+        boolean hasOptions = item.containsKey("options");
+        
+        Log.d(TAG, "Auto-detect: hasAnswer=" + hasAnswer + ", hasCorrectAnswer=" + hasCorrectAnswer 
+                + ", hasCorrectAnswers=" + hasCorrectAnswers + ", hasOptions=" + hasOptions);
+        Log.d(TAG, "Item keys: " + item.keySet());
+        
+        // Priority 1: Check for explicit FILL_IN_BLANK fields
+        if (hasAnswer && !hasCorrectAnswer && !hasCorrectAnswers) {
+            Log.d(TAG, "Detected: FILL_IN_BLANK (has answer/answers field)");
+            return "FILL_IN_BLANK";
+        }
+        
+        // Priority 2: If has correct_answer but NO options -> FILL_IN_BLANK
+        if (hasCorrectAnswer && !hasOptions) {
+            Log.d(TAG, "Detected: FILL_IN_BLANK (has correct_answer, no options)");
+            return "FILL_IN_BLANK";
+        }
+        
+        // Priority 3: Check for MULTIPLE_CHOICE indicators
+        if (hasCorrectAnswers) {
+            Log.d(TAG, "Detected: MULTIPLE_CHOICE");
+            return "MULTIPLE_CHOICE";
+        }
+        
+        // Default to SINGLE_CHOICE
+        Log.d(TAG, "Detected: SINGLE_CHOICE (default)");
+        return "SINGLE_CHOICE";
+    }
+    
+    /**
      * Parse Gemini's raw output which is in markdown JSON format
      */
     private List<AIQuestion> parseGeminiRawOutput(String rawOutput) {
         List<AIQuestion> result = new ArrayList<>();
         
+        if (rawOutput == null || rawOutput.isEmpty()) {
+            Log.w(TAG, "Raw output is null or empty");
+            return result;
+        }
+        
         try {
-            // Remove markdown code blocks: ```json ... ```
+            // Remove markdown code blocks: ```json ... ``` or ``` ... ```
             String cleaned = rawOutput.trim();
+            Log.d(TAG, "Raw output length: " + cleaned.length());
+            
             if (cleaned.startsWith("```json")) {
                 cleaned = cleaned.substring(7); // Remove ```json
             } else if (cleaned.startsWith("```")) {
@@ -192,7 +308,7 @@ public class AIQuizzRespond {
             
             cleaned = cleaned.trim();
             
-            Log.d(TAG, "Cleaned JSON: " + cleaned.substring(0, Math.min(200, cleaned.length())));
+            Log.d(TAG, "Cleaned JSON (first 500 chars): " + cleaned.substring(0, Math.min(500, cleaned.length())));
             
             // Parse as array of Gemini question format
             Gson gson = new Gson();
@@ -200,16 +316,21 @@ public class AIQuizzRespond {
             List<GeminiQuestion> geminiQuestions = gson.fromJson(cleaned, typeToken.getType());
             
             // Convert to AIQuestion format
-            if (geminiQuestions != null) {
+            if (geminiQuestions != null && !geminiQuestions.isEmpty()) {
                 for (GeminiQuestion gq : geminiQuestions) {
-                    result.add(gq.toAIQuestion());
+                    AIQuestion aiQuestion = gq.toAIQuestion();
+                    if (aiQuestion != null && aiQuestion.getQuestionText() != null) {
+                        result.add(aiQuestion);
+                    }
                 }
+                Log.d(TAG, "Successfully parsed " + result.size() + " questions from raw output");
+            } else {
+                Log.w(TAG, "No questions found in raw output after parsing");
             }
-            
-            Log.d(TAG, "Successfully parsed " + result.size() + " questions from raw output");
             
         } catch (Exception e) {
             Log.e(TAG, "Error parsing Gemini raw output: " + e.getMessage(), e);
+            Log.e(TAG, "Raw output that failed to parse: " + rawOutput.substring(0, Math.min(1000, rawOutput.length())));
         }
         
         return result;
@@ -344,28 +465,93 @@ public class AIQuizzRespond {
         @SerializedName("question")
         private String question;
         
+        @SerializedName("type")
+        private String type; // SINGLE_CHOICE, MULTIPLE_CHOICE, FILL_IN_BLANK
+        
         @SerializedName("options")
         private List<String> options;
         
         @SerializedName("correct_answer")
         private String correctAnswer;
         
+        @SerializedName("correct_answers")
+        private List<String> correctAnswers; // For MULTIPLE_CHOICE
+        
+        @SerializedName("answer")
+        private String answer; // For FILL_IN_BLANK
+        
+        @SerializedName("answers")
+        private List<String> answerList; // For FILL_IN_BLANK (multiple)
+        
         public AIQuestion toAIQuestion() {
             AIQuestion aiQuestion = new AIQuestion();
             aiQuestion.setQuestionText(question);
-            aiQuestion.setQuestionType("Single Choice"); // Gemini format is single choice
             
-            List<AIAnswer> answers = new ArrayList<>();
-            if (options != null) {
-                for (String option : options) {
-                    AIAnswer answer = new AIAnswer();
-                    answer.setAnswerText(option);
-                    answer.setCorrect(option.equals(correctAnswer));
-                    answers.add(answer);
+            // Determine question type - auto-detect if not specified
+            String questionType = type;
+            if (questionType == null || questionType.isEmpty()) {
+                // Auto-detect based on available fields
+                // Priority: FILL_IN_BLANK > MULTIPLE_CHOICE > SINGLE_CHOICE
+                boolean hasExplicitAnswer = (answer != null && !answer.isEmpty()) || (answerList != null && !answerList.isEmpty());
+                boolean hasCorrectAnswerNoOptions = (correctAnswer != null && !correctAnswer.isEmpty()) && (options == null || options.isEmpty());
+                
+                if (hasExplicitAnswer || hasCorrectAnswerNoOptions) {
+                    questionType = "FILL_IN_BLANK";
+                } else if (correctAnswers != null && !correctAnswers.isEmpty()) {
+                    questionType = "MULTIPLE_CHOICE";
+                } else {
+                    questionType = "SINGLE_CHOICE";
                 }
             }
-            aiQuestion.setAnswers(answers);
             
+            Log.d(TAG, "GeminiQuestion.toAIQuestion - type: " + type + ", detected: " + questionType);
+            aiQuestion.setQuestionType(questionType);
+            
+            List<AIAnswer> answers = new ArrayList<>();
+            
+            // Parse based on question type
+            if ("MULTIPLE_CHOICE".equalsIgnoreCase(questionType)) {
+                // MULTIPLE_CHOICE: has options and multiple correct answers
+                if (options != null) {
+                    List<String> correctAns = correctAnswers != null ? correctAnswers : new ArrayList<>();
+                    for (String option : options) {
+                        AIAnswer answer = new AIAnswer();
+                        answer.setAnswerText(option);
+                        answer.setCorrect(correctAns.contains(option));
+                        answers.add(answer);
+                    }
+                }
+            } else if ("FILL_IN_BLANK".equalsIgnoreCase(questionType)) {
+                // FILL_IN_BLANK: has answer, answers, or correctAnswer field
+                List<String> correctAns = new ArrayList<>();
+                if (answerList != null && !answerList.isEmpty()) {
+                    correctAns = answerList;
+                } else if (answer != null && !answer.isEmpty()) {
+                    correctAns.add(answer);
+                } else if (correctAnswer != null && !correctAnswer.isEmpty()) {
+                    // Fallback to correctAnswer for FILL_IN_BLANK
+                    correctAns.add(correctAnswer);
+                }
+                
+                for (String ans : correctAns) {
+                    AIAnswer aiAnswer = new AIAnswer();
+                    aiAnswer.setAnswerText(ans);
+                    aiAnswer.setCorrect(true);
+                    answers.add(aiAnswer);
+                }
+            } else {
+                // DEFAULT: SINGLE_CHOICE - has options and single correct answer
+                if (options != null) {
+                    for (String option : options) {
+                        AIAnswer answer = new AIAnswer();
+                        answer.setAnswerText(option);
+                        answer.setCorrect(option.equals(correctAnswer));
+                        answers.add(answer);
+                    }
+                }
+            }
+            
+            aiQuestion.setAnswers(answers);
             return aiQuestion;
         }
     }

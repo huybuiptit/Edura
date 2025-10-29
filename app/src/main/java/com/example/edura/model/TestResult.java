@@ -12,11 +12,11 @@ public class TestResult {
     private int correctAnswers;
     private int questionsCompleted;
     private long completionTime; // in seconds
-    private long timestamp; // when test was taken
+    private long timestamp;
     private int scorePercentage;
 
     public TestResult() {
-        // Required empty constructor for Firestore
+
     }
 
     public TestResult(String quizId, String quizTitle, String userId, int totalQuestions,

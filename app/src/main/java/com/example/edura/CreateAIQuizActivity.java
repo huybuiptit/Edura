@@ -84,7 +84,7 @@ public class CreateAIQuizActivity extends AppCompatActivity {
     }
 
     private void setupLanguageSpinner() {
-        String[] languages = new String[]{"Tiếng Việt", "English", "中文", "日本語", "한국어"};
+        String[] languages = new String[]{"Vietnamese", "English", "Chinese", "Japanese", "Korean"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, languages);
         spinnerLanguage.setAdapter(adapter);
         spinnerLanguage.setText(languages[0], false);
@@ -95,7 +95,7 @@ public class CreateAIQuizActivity extends AppCompatActivity {
     }
 
     private void setupQuestionTypeSpinner() {
-        String[] questionTypes = new String[]{"Trắc nghiệm 1 đáp án", "Trắc nghiệm nhiều đáp án", "Điền vào chỗ trống"};
+        String[] questionTypes = new String[]{"MULTIPLE CHOICE", "MULTIPLE RESPONSE", "FILL IN BLANK"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, questionTypes);
         spinnerQuestionType.setAdapter(adapter);
         spinnerQuestionType.setText(questionTypes[0], false);
@@ -103,13 +103,13 @@ public class CreateAIQuizActivity extends AppCompatActivity {
         spinnerQuestionType.setOnItemClickListener((parent, view, position, id) -> {
             switch (position) {
                 case 0:
-                    selectedQuestionType = "Single Choice";
+                    selectedQuestionType = "SINGLE CHOICE";
                     break;
                 case 1:
-                    selectedQuestionType = "Multiple Choice";
+                    selectedQuestionType = "MULTIPLE CHOICE";
                     break;
                 case 2:
-                    selectedQuestionType = "Fill in Blank";
+                    selectedQuestionType = "FILL_IN_BLANK";
                     break;
             }
         });

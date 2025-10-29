@@ -61,10 +61,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize Firebase Auth
+
         auth = FirebaseAuth.getInstance();
         
-        // Disable App Check verification for emulator/testing
+        // Disable valaidative method for emulator/testing
         auth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
         GoogleSignInOptions gso;
 
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         facebookButton = findViewById(R.id.facebookButton);
         appleButton = findViewById(R.id.appleButton);
 
-        // Set up click listeners
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,7 +171,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
     private void goToMain() {
-        // Thay MainActivity.class bằng Activity chính của bạn
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

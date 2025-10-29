@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Edura">
 
-        <!-- Login Activity - Main Launcher -->
+        <!-- Login Activity -->
         <activity
             android:name="com.example.edura.LoginActivity"
             android:exported="true"

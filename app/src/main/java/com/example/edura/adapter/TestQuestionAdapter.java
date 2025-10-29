@@ -133,7 +133,7 @@ public class TestQuestionAdapter extends RecyclerView.Adapter<TestQuestionAdapte
             }
         }
         
-        // Partial credit: (số câu đúng chọn được) / (tổng số câu đúng)
+        // Partial credit
         return (double) correctSelected / correctIndices.size();
     }
     

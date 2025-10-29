@@ -98,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        // --- GOOGLE SIGN IN CONFIG ---
+        //Config for Google sign in
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id)) // lấy từ google-services.json
                 .requestEmail()

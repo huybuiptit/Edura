@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
             String displayName = currentUser.getDisplayName();
             String email = currentUser.getEmail();
             
-            // Sử dụng displayName nếu có, nếu không thì lấy phần trước @ của email
+            // Display:"Welcome, @username"
             String userName;
             if (displayName != null && !displayName.isEmpty()) {
                 userName = displayName;

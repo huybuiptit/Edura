@@ -46,8 +46,9 @@ public class TestConfigActivity extends AppCompatActivity {
         }
 
         // Set initial selected questions to total or 10, whichever is smaller
-        selectedQuestions = Math.min(totalQuestions, 10);
-        timeLimit = selectedQuestions; // 1 minute per question initially
+        selectedQuestions = Math.min(totalQuestions, 100);
+        // 1 minute per question initially
+        timeLimit = selectedQuestions;
 
         initViews();
         setupListeners();

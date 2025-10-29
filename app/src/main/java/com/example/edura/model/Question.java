@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class Question {
     public enum QuestionType {
-        SINGLE_CHOICE,   // Chọn 1 trong 4 đáp án
-        MULTIPLE_CHOICE, // Chọn nhiều đáp án
-        FILL_IN_BLANK    // Điền vào chỗ trống
+        SINGLE_CHOICE,   // Choose 1 in 4 answer
+        MULTIPLE_CHOICE, // Choose multiple answer
+        FILL_IN_BLANK    // Fill answer into blank
     }
 
     private String questionId;
@@ -17,7 +17,7 @@ public class Question {
     private QuestionType questionType;
     private List<Answer> answers;
 
-    // Empty constructor needed for Firestore
+
     public Question() {
         this.answers = new ArrayList<>();
     }
@@ -28,7 +28,7 @@ public class Question {
         this.answers = new ArrayList<>();
     }
 
-    // Getters and Setters
+
     public String getQuestionId() {
         return questionId;
     }
@@ -65,7 +65,7 @@ public class Question {
         this.answers.add(answer);
     }
 
-    // Convert to Map for Firestore
+
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("questionId", questionId);
@@ -81,13 +81,17 @@ public class Question {
         return map;
     }
 
-    // Create from Map
+
     public static Question fromMap(Map<String, Object> map) {
         Question question = new Question();
         question.setQuestionId((String) map.get("questionId"));
         question.setQuestionText((String) map.get("questionText"));
         
         String typeStr = (String) map.get("questionType");
+        // Default to SINGLE_CHOICE if type is null or empty
+        if (typeStr == null || typeStr.isEmpty()) {
+            typeStr = "SINGLE_CHOICE";
+        }
         question.setQuestionType(QuestionType.valueOf(typeStr));
         
         List<Map<String, Object>> answerMaps = (List<Map<String, Object>>) map.get("answers");

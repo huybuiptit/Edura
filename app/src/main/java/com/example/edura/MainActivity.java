@@ -37,13 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        // Initialize views
         initViews();
         
-        // Setup listeners
         setupListeners();
         
-        // Load default fragment (Home)
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment(), 0);
         }
@@ -144,10 +141,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         Log.d("MainActivity1", "onStart called");
         super.onStart();
-        // Check if user is signed in
         FirebaseUser currentUser = auth.getCurrentUser();
+
         if (currentUser == null) {
-            // User not logged in, redirect to login
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }

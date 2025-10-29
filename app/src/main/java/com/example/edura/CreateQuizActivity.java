@@ -289,15 +289,25 @@ public class CreateQuizActivity extends AppCompatActivity {
                 QuestionView lastQv = questionViews.get(questionViews.size() - 1);
                 lastQv.setQuestionText(question.getQuestionText());
                 
-                if (type != Question.QuestionType.FILL_IN_BLANK) {
+                if (type == Question.QuestionType.FILL_IN_BLANK) {
+                    // For FILL_IN_BLANK, handle multiple answers
+                    if (!question.getAnswers().isEmpty()) {
+                        // Get all correct answers and join them with comma/semicolon
+                        StringBuilder answerText = new StringBuilder();
+                        for (int i = 0; i < question.getAnswers().size(); i++) {
+                            Answer answer = question.getAnswers().get(i);
+                            if (i > 0) {
+                                answerText.append("; ");
+                            }
+                            answerText.append(answer.getAnswerText());
+                        }
+                        lastQv.setFillInBlankAnswer(answerText.toString());
+                    }
+                } else {
+                    // For SINGLE_CHOICE and MULTIPLE_CHOICE
                     lastQv.clearAnswers();
                     for (Answer answer : question.getAnswers()) {
                         lastQv.addAnswerField(answer.getAnswerText(), answer.getCorrect());
-                    }
-                } else {
-                    // For fill in blank, just set the answer text
-                    if (!question.getAnswers().isEmpty()) {
-                        lastQv.setFillInBlankAnswer(question.getAnswers().get(0).getAnswerText());
                     }
                 }
             }
@@ -346,7 +356,7 @@ public class CreateQuizActivity extends AppCompatActivity {
                 });
     }
 
-    // Inner class to manage question card views
+    // Manage question card views
     private class QuestionView {
         private View cardView;
         private int questionNumber;
@@ -520,9 +530,7 @@ public class CreateQuizActivity extends AppCompatActivity {
                     }
                 }
             } else if (questionType == Question.QuestionType.MULTIPLE_CHOICE) {
-                // Multiple Response: Allow multiple selections
-                // No special handling needed, just keep the current state
-                // The checkbox will handle its own toggle behavior
+
             }
         }
 
@@ -544,12 +552,19 @@ public class CreateQuizActivity extends AppCompatActivity {
             List<Answer> answers = new ArrayList<>();
             
             if (questionType == Question.QuestionType.FILL_IN_BLANK) {
-                // For fill in blank, get the single answer
+                // For fill in blank, get the answers (may be multiple separated by semicolon)
                 if (etFillInBlankAnswer != null) {
                     String answerText = etFillInBlankAnswer.getText() != null ? 
                             etFillInBlankAnswer.getText().toString().trim() : "";
                     if (!answerText.isEmpty()) {
-                        answers.add(new Answer(answerText, true));
+                        // Parse multiple answers separated by semicolon
+                        String[] answerArray = answerText.split(";");
+                        for (String ans : answerArray) {
+                            String trimmedAns = ans.trim();
+                            if (!trimmedAns.isEmpty()) {
+                                answers.add(new Answer(trimmedAns, true));
+                            }
+                        }
                     }
                 }
             } else {
@@ -590,7 +605,7 @@ public class CreateQuizActivity extends AppCompatActivity {
             // Set up the correct control based on question type
             setupCorrectnessControl(isCorrect);
             
-            // Handle delete button
+
             btnDeleteAnswer.setOnClickListener(v -> {
                 parentQuestion.removeAnswer(this);
             });

@@ -54,22 +54,16 @@ public class QuestionsListActivity extends AppCompatActivity implements Question
         String quizTitle = getIntent().getStringExtra("quizTitle");
         boolean openAddQuestion = getIntent().getBooleanExtra("openAddQuestion", false);
 
-        // Initialize views
         initViews();
         
-        // Set quiz title
         tvQuizTitle.setText(quizTitle);
         
-        // Setup RecyclerView
         setupRecyclerView();
         
-        // Load quiz and questions
         loadQuiz();
         
-        // Setup listeners
         setupListeners();
 
-        // Open add question dialog if requested
         if (openAddQuestion) {
             fabAddQuestion.postDelayed(() -> showCreateQuestionDialog(), 300);
         }

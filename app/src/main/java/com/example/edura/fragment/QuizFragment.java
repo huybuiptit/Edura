@@ -82,7 +82,7 @@ public class QuizFragment extends Fragment implements QuizAdapter.OnQuizClickLis
         rvQuizzes.setLayoutManager(layoutManager);
         rvQuizzes.setHasFixedSize(false);
         rvQuizzes.setNestedScrollingEnabled(false);
-        rvQuizzes.setOverScrollMode(View.OVER_SCROLL_NEVER);
+//        rvQuizzes.setOverScrollMode(View.OVER_SCROLL_NEVER);
         rvQuizzes.setAdapter(quizAdapter);
         
         // Force RecyclerView to measure all items
