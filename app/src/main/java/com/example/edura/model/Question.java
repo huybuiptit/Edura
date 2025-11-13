@@ -11,10 +11,17 @@ public class Question {
         MULTIPLE_CHOICE, // Choose multiple answer
         FILL_IN_BLANK    // Fill answer into blank
     }
+    
+    public enum DifficultyLevel {
+        EASY,    // Dễ
+        MEDIUM,  // Trung bình
+        HARD     // Khó
+    }
 
     private String questionId;
     private String questionText;
     private QuestionType questionType;
+    private DifficultyLevel difficultyLevel;
     private List<Answer> answers;
 
 
@@ -52,6 +59,14 @@ public class Question {
     public void setQuestionType(QuestionType questionType) {
         this.questionType = questionType;
     }
+    
+    public DifficultyLevel getDifficultyLevel() {
+        return difficultyLevel;
+    }
+    
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
+    }
 
     public List<Answer> getAnswers() {
         return answers;
@@ -71,6 +86,7 @@ public class Question {
         map.put("questionId", questionId);
         map.put("questionText", questionText);
         map.put("questionType", questionType.name());
+        map.put("difficultyLevel", difficultyLevel != null ? difficultyLevel.name() : DifficultyLevel.MEDIUM.name());
         
         List<Map<String, Object>> answerMaps = new ArrayList<>();
         for (Answer answer : answers) {
@@ -93,6 +109,17 @@ public class Question {
             typeStr = "SINGLE_CHOICE";
         }
         question.setQuestionType(QuestionType.valueOf(typeStr));
+        
+        // Parse difficulty level
+        String difficultyStr = (String) map.get("difficultyLevel");
+        if (difficultyStr == null || difficultyStr.isEmpty()) {
+            difficultyStr = "MEDIUM";
+        }
+        try {
+            question.setDifficultyLevel(DifficultyLevel.valueOf(difficultyStr));
+        } catch (IllegalArgumentException e) {
+            question.setDifficultyLevel(DifficultyLevel.MEDIUM);
+        }
         
         List<Map<String, Object>> answerMaps = (List<Map<String, Object>>) map.get("answers");
         List<Answer> answers = new ArrayList<>();

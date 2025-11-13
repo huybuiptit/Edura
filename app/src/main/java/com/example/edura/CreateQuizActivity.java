@@ -216,6 +216,7 @@ public class CreateQuizActivity extends AppCompatActivity {
             if (answers.isEmpty()) continue;
             
             Question question = new Question(questionText, qv.getQuestionType());
+            question.setDifficultyLevel(qv.getDifficultyLevel());
             question.setAnswers(answers);
             questions.add(question);
         }
@@ -242,6 +243,7 @@ public class CreateQuizActivity extends AppCompatActivity {
                             addQuestionCard(type);
                             QuestionView lastQv = questionViews.get(questionViews.size() - 1);
                             lastQv.setQuestionText(question.getQuestionText());
+                            lastQv.setDifficultyLevel(question.getDifficultyLevel());
                             
                             if (type != Question.QuestionType.FILL_IN_BLANK) {
                                 lastQv.clearAnswers();
@@ -288,6 +290,7 @@ public class CreateQuizActivity extends AppCompatActivity {
                 addQuestionCard(type);
                 QuestionView lastQv = questionViews.get(questionViews.size() - 1);
                 lastQv.setQuestionText(question.getQuestionText());
+                lastQv.setDifficultyLevel(question.getDifficultyLevel());
                 
                 if (type == Question.QuestionType.FILL_IN_BLANK) {
                     // For FILL_IN_BLANK, handle multiple answers
@@ -363,6 +366,8 @@ public class CreateQuizActivity extends AppCompatActivity {
         private Question.QuestionType questionType;
         private TabLayout tabQuestionType;
         private TextInputEditText etQuestion;
+        private RadioGroup rgDifficultyLevel;
+        private RadioButton rbEasy, rbMedium, rbHard;
         private LinearLayout answersContainer;
         private Button btnAddAnswer;
         private ImageButton btnDeleteQuestion;
@@ -379,6 +384,10 @@ public class CreateQuizActivity extends AppCompatActivity {
             
             etQuestion = cardView.findViewById(R.id.etQuestion);
             tabQuestionType = cardView.findViewById(R.id.tabQuestionType);
+            rgDifficultyLevel = cardView.findViewById(R.id.rgDifficultyLevel);
+            rbEasy = cardView.findViewById(R.id.rbEasy);
+            rbMedium = cardView.findViewById(R.id.rbMedium);
+            rbHard = cardView.findViewById(R.id.rbHard);
             btnDeleteQuestion = cardView.findViewById(R.id.btnDeleteQuestion);
             
             // Set initial tab selection
@@ -545,6 +554,37 @@ public class CreateQuizActivity extends AppCompatActivity {
         public void setFillInBlankAnswer(String text) {
             if (etFillInBlankAnswer != null) {
                 etFillInBlankAnswer.setText(text);
+            }
+        }
+
+        public Question.DifficultyLevel getDifficultyLevel() {
+            if (rgDifficultyLevel != null) {
+                int selectedId = rgDifficultyLevel.getCheckedRadioButtonId();
+                if (selectedId == rbEasy.getId()) {
+                    return Question.DifficultyLevel.EASY;
+                } else if (selectedId == rbHard.getId()) {
+                    return Question.DifficultyLevel.HARD;
+                } else {
+                    return Question.DifficultyLevel.MEDIUM;
+                }
+            }
+            return Question.DifficultyLevel.MEDIUM;
+        }
+        
+        public void setDifficultyLevel(Question.DifficultyLevel level) {
+            if (rgDifficultyLevel != null && level != null) {
+                switch (level) {
+                    case EASY:
+                        rbEasy.setChecked(true);
+                        break;
+                    case HARD:
+                        rbHard.setChecked(true);
+                        break;
+                    case MEDIUM:
+                    default:
+                        rbMedium.setChecked(true);
+                        break;
+                }
             }
         }
 

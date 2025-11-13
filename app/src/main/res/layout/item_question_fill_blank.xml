@@ -75,7 +75,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="12dp"
             app:boxBackgroundMode="filled"
             app:boxBackgroundColor="#F5F7FA"
             app:boxCornerRadiusBottomEnd="8dp"
@@ -92,6 +92,62 @@
                 android:inputType="textMultiLine"
                 android:minLines="2" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Difficulty Level Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cấp độ:"
+            android:textColor="@color/dark_text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/rgDifficultyLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbEasy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Dễ"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:buttonTint="#4CAF50" />
+
+            <RadioButton
+                android:id="@+id/rbMedium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Trung bình"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:checked="true"
+                android:buttonTint="#FF9800" />
+
+            <RadioButton
+                android:id="@+id/rbHard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Khó"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:buttonTint="#F44336" />
+        </RadioGroup>
 
         <!-- Single Answer Input for Fill in Blank -->
         <com.google.android.material.textfield.TextInputLayout

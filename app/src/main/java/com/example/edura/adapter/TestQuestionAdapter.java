@@ -195,7 +195,7 @@ public class TestQuestionAdapter extends RecyclerView.Adapter<TestQuestionAdapte
     }
 
     class QuestionViewHolder extends RecyclerView.ViewHolder {
-        TextView tvQuestionNumber, tvQuestionText;
+        TextView tvQuestionNumber, tvQuestionText, tvDifficultyBadge;
         RadioGroup radioGroupAnswers;
         LinearLayout checkboxGroupAnswers;
         TextInputLayout fillInBlankLayout;
@@ -205,6 +205,7 @@ public class TestQuestionAdapter extends RecyclerView.Adapter<TestQuestionAdapte
             super(itemView);
             tvQuestionNumber = itemView.findViewById(R.id.tvQuestionNumber);
             tvQuestionText = itemView.findViewById(R.id.tvQuestionText);
+            tvDifficultyBadge = itemView.findViewById(R.id.tvDifficultyBadge);
             radioGroupAnswers = itemView.findViewById(R.id.radioGroupAnswers);
             checkboxGroupAnswers = itemView.findViewById(R.id.checkboxGroupAnswers);
             fillInBlankLayout = itemView.findViewById(R.id.fillInBlankLayout);
@@ -215,6 +216,9 @@ public class TestQuestionAdapter extends RecyclerView.Adapter<TestQuestionAdapte
             int questionNumber = questionIndex + 1;
             tvQuestionNumber.setText("Question " + questionNumber + " of " + questions.size());
             tvQuestionText.setText(question.getQuestionText());
+
+            // Set difficulty badge
+            setDifficultyBadge(question.getDifficultyLevel());
 
             // Hide all answer types first
             radioGroupAnswers.setVisibility(View.GONE);
@@ -229,6 +233,30 @@ public class TestQuestionAdapter extends RecyclerView.Adapter<TestQuestionAdapte
                 bindMultipleChoice(question, questionIndex);
             } else if (type == Question.QuestionType.FILL_IN_BLANK) {
                 bindFillInBlank(question, questionIndex);
+            }
+        }
+        
+        private void setDifficultyBadge(Question.DifficultyLevel level) {
+            if (tvDifficultyBadge == null) return;
+            
+            if (level == null) {
+                level = Question.DifficultyLevel.MEDIUM;
+            }
+            
+            switch (level) {
+                case EASY:
+                    tvDifficultyBadge.setText("Dễ");
+                    tvDifficultyBadge.setBackgroundResource(R.drawable.bg_difficulty_easy);
+                    break;
+                case HARD:
+                    tvDifficultyBadge.setText("Khó");
+                    tvDifficultyBadge.setBackgroundResource(R.drawable.bg_difficulty_hard);
+                    break;
+                case MEDIUM:
+                default:
+                    tvDifficultyBadge.setText("Trung bình");
+                    tvDifficultyBadge.setBackgroundResource(R.drawable.bg_difficulty_medium);
+                    break;
             }
         }
         

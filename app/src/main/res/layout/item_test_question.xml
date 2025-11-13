@@ -14,7 +14,7 @@
         android:text="Questions 2 of 2"
         android:textColor="@color/gray_text"
         android:textSize="14sp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="8dp" />
 
     <!-- Question Text -->
     <TextView
@@ -26,7 +26,23 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:lineSpacingExtra="4dp"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="8dp" />
+
+    <!-- Difficulty Badge -->
+    <TextView
+        android:id="@+id/tvDifficultyBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trung bình"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/bg_difficulty_medium"
+        android:layout_marginBottom="20dp" />
 
     <!-- Single Choice Answers (Radio buttons) -->
     <RadioGroup

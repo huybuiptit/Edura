@@ -55,7 +55,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     }
 
     class QuestionViewHolder extends RecyclerView.ViewHolder {
-        TextView tvQuestionNumber, tvQuestionText, tvQuestionType;
+        TextView tvQuestionNumber, tvQuestionText, tvQuestionType, tvDifficultyBadge;
         LinearLayout llAnswers;
         ImageButton btnDeleteQuestion;
 
@@ -64,6 +64,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             tvQuestionNumber = itemView.findViewById(R.id.tvQuestionNumber);
             tvQuestionText = itemView.findViewById(R.id.tvQuestionText);
             tvQuestionType = itemView.findViewById(R.id.tvQuestionType);
+            tvDifficultyBadge = itemView.findViewById(R.id.tvDifficultyBadge);
             llAnswers = itemView.findViewById(R.id.llAnswers);
             btnDeleteQuestion = itemView.findViewById(R.id.btnDeleteQuestion);
         }
@@ -71,6 +72,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         public void bind(Question question, int position) {
             tvQuestionNumber.setText("Question " + (position + 1));
             tvQuestionText.setText(question.getQuestionText());
+            
+            // Set difficulty badge
+            setDifficultyBadge(question.getDifficultyLevel());
             
             // Set question type badge
             if (question.getQuestionType() == Question.QuestionType.SINGLE_CHOICE) {
@@ -109,6 +113,30 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
                     listener.onDeleteQuestion(question, getAdapterPosition());
                 }
             });
+        }
+        
+        private void setDifficultyBadge(Question.DifficultyLevel level) {
+            if (tvDifficultyBadge == null) return;
+            
+            if (level == null) {
+                level = Question.DifficultyLevel.MEDIUM;
+            }
+            
+            switch (level) {
+                case EASY:
+                    tvDifficultyBadge.setText("Dễ");
+                    tvDifficultyBadge.setBackgroundResource(R.drawable.bg_difficulty_easy);
+                    break;
+                case HARD:
+                    tvDifficultyBadge.setText("Khó");
+                    tvDifficultyBadge.setBackgroundResource(R.drawable.bg_difficulty_hard);
+                    break;
+                case MEDIUM:
+                default:
+                    tvDifficultyBadge.setText("Trung bình");
+                    tvDifficultyBadge.setBackgroundResource(R.drawable.bg_difficulty_medium);
+                    break;
+            }
         }
     }
 }

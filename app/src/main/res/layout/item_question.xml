@@ -13,15 +13,39 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Question Header -->
-        <TextView
-            android:id="@+id/tvQuestionNumber"
-            android:layout_width="wrap_content"
+        <!-- Question Header with Difficulty Badge -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Question 1"
-            android:textColor="@color/light_blue"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvQuestionNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Question 1"
+                android:textColor="@color/light_blue"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <!-- Difficulty Badge -->
+            <TextView
+                android:id="@+id/tvDifficultyBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trung bình"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:background="@drawable/bg_difficulty_medium" />
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/btnDeleteQuestion"
