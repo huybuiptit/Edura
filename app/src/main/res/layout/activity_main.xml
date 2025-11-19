@@ -53,7 +53,36 @@
                 android:textSize="11sp" />
         </LinearLayout>
 
-        <!-- Quizz -->
+        <!-- Kho -->
+        <LinearLayout
+            android:id="@+id/navLibrary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/navLibraryIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_library_grid"
+                android:layout_marginBottom="4dp"
+                app:tint="@color/nav_unselected" />
+
+            <TextView
+                android:id="@+id/navLibraryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kho"
+                android:textColor="@color/nav_unselected"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Quiz -->
         <LinearLayout
             android:id="@+id/navQuiz"
             android:layout_width="0dp"
@@ -69,7 +98,7 @@
                 android:id="@+id/navQuizIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_categories"
+                android:src="@drawable/ic_quiz"
                 android:layout_marginBottom="4dp"
                 app:tint="@color/nav_unselected" />
 
@@ -77,36 +106,7 @@
                 android:id="@+id/navQuizText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quizz"
-                android:textColor="@color/nav_unselected"
-                android:textSize="11sp" />
-        </LinearLayout>
-
-        <!-- Thống kê -->
-        <LinearLayout
-            android:id="@+id/navStats"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="8dp"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageView
-                android:id="@+id/navStatsIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_leaderboard"
-                android:layout_marginBottom="4dp"
-                app:tint="@color/nav_unselected" />
-
-            <TextView
-                android:id="@+id/navStatsText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thống kê"
+                android:text="Quiz"
                 android:textColor="@color/nav_unselected"
                 android:textSize="11sp" />
         </LinearLayout>

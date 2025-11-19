@@ -23,9 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    private LinearLayout navHome, navQuiz, navStats, navProfile;
-    private ImageView navHomeIcon, navQuizIcon, navStatsIcon, navProfileIcon;
-    private TextView navHomeText, navQuizText, navStatsText, navProfileText;
+    private LinearLayout navHome, navLibrary, navQuiz, navProfile;
+    private ImageView navHomeIcon, navLibraryIcon, navQuizIcon, navProfileIcon;
+    private TextView navHomeText, navLibraryText, navQuizText, navProfileText;
     
     private int currentTabIndex = 0;
 
@@ -48,25 +48,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViews() {
         navHome = findViewById(R.id.navHome);
+        navLibrary = findViewById(R.id.navLibrary);
         navQuiz = findViewById(R.id.navQuiz);
-        navStats = findViewById(R.id.navStats);
         navProfile = findViewById(R.id.navProfile);
         
         navHomeIcon = findViewById(R.id.navHomeIcon);
+        navLibraryIcon = findViewById(R.id.navLibraryIcon);
         navQuizIcon = findViewById(R.id.navQuizIcon);
-        navStatsIcon = findViewById(R.id.navStatsIcon);
         navProfileIcon = findViewById(R.id.navProfileIcon);
         
         navHomeText = findViewById(R.id.navHomeText);
+        navLibraryText = findViewById(R.id.navLibraryText);
         navQuizText = findViewById(R.id.navQuizText);
-        navStatsText = findViewById(R.id.navStatsText);
         navProfileText = findViewById(R.id.navProfileText);
     }
 
     private void setupListeners() {
         navHome.setOnClickListener(v -> loadFragment(new HomeFragment(), 0));
-        navQuiz.setOnClickListener(v -> loadFragment(new QuizFragment(), 1));
-        navStats.setOnClickListener(v -> loadFragment(new StatsFragment(), 2));
+        navLibrary.setOnClickListener(v -> loadFragment(new QuizFragment(), 1));
+        navQuiz.setOnClickListener(v -> loadFragment(new StatsFragment(), 2));
         navProfile.setOnClickListener(v -> loadFragment(new ProfileFragment(), 3));
     }
 
@@ -107,13 +107,13 @@ public class MainActivity extends AppCompatActivity {
         int selectedColor = Color.parseColor("#4169E1");
         
         navHomeIcon.setColorFilter(unselectedColor);
+        navLibraryIcon.setColorFilter(unselectedColor);
         navQuizIcon.setColorFilter(unselectedColor);
-        navStatsIcon.setColorFilter(unselectedColor);
         navProfileIcon.setColorFilter(unselectedColor);
         
         navHomeText.setTextColor(unselectedColor);
+        navLibraryText.setTextColor(unselectedColor);
         navQuizText.setTextColor(unselectedColor);
-        navStatsText.setTextColor(unselectedColor);
         navProfileText.setTextColor(unselectedColor);
         
         // Set selected
@@ -123,12 +123,12 @@ public class MainActivity extends AppCompatActivity {
                 navHomeText.setTextColor(selectedColor);
                 break;
             case 1:
-                navQuizIcon.setColorFilter(selectedColor);
-                navQuizText.setTextColor(selectedColor);
+                navLibraryIcon.setColorFilter(selectedColor);
+                navLibraryText.setTextColor(selectedColor);
                 break;
             case 2:
-                navStatsIcon.setColorFilter(selectedColor);
-                navStatsText.setTextColor(selectedColor);
+                navQuizIcon.setColorFilter(selectedColor);
+                navQuizText.setTextColor(selectedColor);
                 break;
             case 3:
                 navProfileIcon.setColorFilter(selectedColor);
